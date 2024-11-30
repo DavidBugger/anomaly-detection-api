@@ -5,13 +5,19 @@ from preprocess import preprocess
 # Load the trained model
 model = load_model("anomaly_detection_model.h5")
 
+
 def predict_anomaly(data):
+    # Preprocess the input data
     preprocessed_data = preprocess(data)
+    # Get the prediction from the model
     prediction = model.predict(preprocessed_data)
-    is_anomaly = bool(prediction[0][0] > 0.5)
+    # Extract the probability of anomaly
     probability = float(prediction[0][0])
-    return {
-        "is_anomaly": is_anomaly,
-        "probability": probability,
-        "message": "Anomaly detection result"
-    }
+    # Determine if it is an anomaly
+    is_anomaly = probability > 0.58  # Compare probability directly
+    # Return the result
+    if is_anomaly:
+        return {'is_anomaly': True, 'probability': probability, 'message': 'Anomaly in prediction'}
+    else:
+        return {'is_anomaly': False, 'probability': probability, 'message': 'No anomaly in prediction'}
+
