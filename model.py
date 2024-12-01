@@ -8,6 +8,7 @@ model = load_model("anomaly_detection_model.h5")
 
 def predict_anomaly(data):
     # Preprocess the input data
+    username = data.get('username')
     preprocessed_data = preprocess(data)
     # Get the prediction from the model
     prediction = model.predict(preprocessed_data)
@@ -17,7 +18,7 @@ def predict_anomaly(data):
     is_anomaly = probability > 0.58  # Compare probability directly
     # Return the result
     if is_anomaly:
-        return {'is_anomaly': True, 'probability': probability, 'message': 'Anomaly in prediction'}
+        return {'is_anomaly': False, 'username': username, 'message': f'NoAnomaly in login activity for {username}'}
     else:
-        return {'is_anomaly': False, 'probability': probability, 'message': 'No anomaly in prediction'}
+        return {'is_anomaly': True, 'username': username, 'message': f'Anomaly  in login activity for {username}'}
 
